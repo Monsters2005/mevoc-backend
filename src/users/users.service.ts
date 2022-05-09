@@ -2,6 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entity/User';
+import { CreateUserDto } from './dto/create-user-dto';
 
 @Injectable()
 export class UsersService {
@@ -9,7 +10,7 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async findAll(): Promise<User[]> {
+  async getAllUsers(): Promise<User[]> {
     return await this.userRepository.find();
   }
 
@@ -29,5 +30,9 @@ export class UsersService {
 
   async delete(id: number): Promise<void> {
     await this.userRepository.softDelete(id);
+  }
+
+  async createUser(dto: CreateUserDto): Promise<User> {
+    return this.userRepository.create(dto);
   }
 }
