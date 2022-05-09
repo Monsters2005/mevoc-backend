@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { User } from './entity/User';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -17,9 +19,15 @@ import { AppService } from './app.service';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [],
+      entities: [User],
+      migrations: ['dist/migration/*.js'],
+      cli: {
+        entitiesDir: 'src/entity',
+        migrationsDir: 'src/migration',
+      },
       synchronize: false,
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
