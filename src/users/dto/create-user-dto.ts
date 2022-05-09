@@ -14,10 +14,6 @@ export class CreateUserDto {
   readonly firstName: string;
 
   @IsNotEmpty({ message: 'Should not be empty' })
-  @IsString({ message: 'Should be a string' })
-  readonly lastName: string;
-
-  @IsNotEmpty({ message: 'Should not be empty' })
   @Length(MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH, {
     message: `Password should be at least ${MIN_PASSWORD_LENGTH} characters long`,
   })
