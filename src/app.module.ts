@@ -6,6 +6,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './entity/User';
 import { UsersModule } from './users/users.module';
+import { WordModule } from './word/word.module';
+import { ListController } from './list/list.controller';
+import { ListService } from './list/list.service';
+import { ListModule } from './list/list.module';
 
 @Module({
   imports: [
@@ -28,8 +32,10 @@ import { UsersModule } from './users/users.module';
       synchronize: false,
     }),
     UsersModule,
+    WordModule,
+    ListModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, ListController],
+  providers: [AppService, ListService],
 })
 export class AppModule {}
