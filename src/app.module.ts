@@ -6,6 +6,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './entity/User';
 import { UsersModule } from './users/users.module';
+import { WordpackController } from './wordpack/wordpack.controller';
+import { WordpackModule } from './wordpack/wordpack.module';
 
 @Module({
   imports: [
@@ -28,8 +30,9 @@ import { UsersModule } from './users/users.module';
       synchronize: false,
     }),
     UsersModule,
+    WordpackModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, WordpackController],
   providers: [AppService],
 })
 export class AppModule {}
