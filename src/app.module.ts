@@ -9,7 +9,10 @@ import { UsersModule } from './users/users.module';
 import { WordModule } from './word/word.module';
 import { ListController } from './list/list.controller';
 import { ListService } from './list/list.service';
-import { ListModule } from './list/list.module';
+import { AuthModule } from './auth/auth.module';
+import { TokenService } from './token/token.service';
+import { TokenModule } from './token/token.module';
+
 
 @Module({
   imports: [
@@ -32,10 +35,13 @@ import { ListModule } from './list/list.module';
       synchronize: false,
     }),
     UsersModule,
+    AuthModule,
+    TokenModule,
     WordModule,
     ListModule,
   ],
   controllers: [AppController, ListController],
-  providers: [AppService, ListService],
+  providers: [AppService, ListService, TokenService],
+
 })
 export class AppModule {}
