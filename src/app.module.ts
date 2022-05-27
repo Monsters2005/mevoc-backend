@@ -6,9 +6,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './entity/User';
 import { UsersModule } from './users/users.module';
+import { WordModule } from './word/word.module';
+import { ListController } from './list/list.controller';
+import { ListService } from './list/list.service';
 import { AuthModule } from './auth/auth.module';
 import { TokenService } from './token/token.service';
 import { TokenModule } from './token/token.module';
+
 
 @Module({
   imports: [
@@ -33,8 +37,11 @@ import { TokenModule } from './token/token.module';
     UsersModule,
     AuthModule,
     TokenModule,
+    WordModule,
+    ListModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, TokenService],
+  controllers: [AppController, ListController],
+  providers: [AppService, ListService, TokenService],
+
 })
 export class AppModule {}
