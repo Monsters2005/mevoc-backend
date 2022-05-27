@@ -6,6 +6,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './entity/User';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { TokenService } from './token/token.service';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [
@@ -28,8 +31,10 @@ import { UsersModule } from './users/users.module';
       synchronize: false,
     }),
     UsersModule,
+    AuthModule,
+    TokenModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TokenService],
 })
 export class AppModule {}
