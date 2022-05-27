@@ -6,8 +6,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './entity/User';
 import { UsersModule } from './users/users.module';
+
 import { WordpackController } from './wordpack/wordpack.controller';
 import { WordpackModule } from './wordpack/wordpack.module';
+import { ListModule } from './list/list.module';
+import { WordModule } from './word/word.module';
+import { ListController } from './list/list.controller';
+import { ListService } from './list/list.service';
+import { AuthModule } from './auth/auth.module';
+import { TokenService } from './token/token.service';
+import { TokenModule } from './token/token.module';
 
 @Module({
   imports: [
@@ -31,8 +39,12 @@ import { WordpackModule } from './wordpack/wordpack.module';
     }),
     UsersModule,
     WordpackModule,
+    AuthModule,
+    TokenModule,
+    WordModule,
+    ListModule,
   ],
-  controllers: [AppController, WordpackController],
-  providers: [AppService],
+  controllers: [AppController, WordpackController, ListController],
+  providers: [AppService, ListService, TokenService],
 })
 export class AppModule {}
