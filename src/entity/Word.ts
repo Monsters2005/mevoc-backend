@@ -1,5 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { AppEntity } from './AppEntity';
+import { List } from './List';
+
 
 @Entity()
 export class Word extends AppEntity {
@@ -14,4 +17,8 @@ export class Word extends AppEntity {
 
   @Column({ type: 'string' })
   dateLearned: null | string;
+
+  @ManyToOne(() => List, (list) => list.words)
+  list: List;
+
 }

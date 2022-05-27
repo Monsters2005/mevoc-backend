@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './entity/User';
 import { UsersModule } from './users/users.module';
+import { ListModule } from './list/list.module';
 import { WordModule } from './word/word.module';
 import { ListController } from './list/list.controller';
 import { ListService } from './list/list.service';
