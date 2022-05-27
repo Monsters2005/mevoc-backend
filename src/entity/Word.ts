@@ -1,6 +1,8 @@
+
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { AppEntity } from './AppEntity';
 import { List } from './List';
+
 
 @Entity()
 export class Word extends AppEntity {
@@ -18,4 +20,5 @@ export class Word extends AppEntity {
 
   @ManyToOne(() => List, (list) => list.words)
   list: List;
+
 }
