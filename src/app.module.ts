@@ -16,6 +16,8 @@ import { ListService } from './list/list.service';
 import { AuthModule } from './auth/auth.module';
 import { TokenService } from './token/token.service';
 import { TokenModule } from './token/token.module';
+import { WordService } from './word/word.service';
+import { WordController } from './word/word.controller';
 
 @Module({
   imports: [
@@ -44,7 +46,7 @@ import { TokenModule } from './token/token.module';
     WordModule,
     ListModule,
   ],
-  controllers: [AppController, WordpackController, ListController],
-  providers: [AppService, ListService, TokenService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -89,14 +89,14 @@ export class AuthController {
   }
 
   @ApiResponse({ status: 200 })
-  @Get('/signout')
+  @Post('/signout')
   logout(@Req() req: Request) {
     const { refreshToken } = req.cookies;
     return this.authService.signout(refreshToken);
   }
 
   @ApiResponse({ status: 200, type: VerifyEmailDto })
-  @Get('/verify')
+  @Post('/verify')
   verifyByEmail(
     @Query('confirmed_hash') confirmedHash: string,
     @Res() res: Response,
@@ -105,7 +105,7 @@ export class AuthController {
   }
 
   @ApiResponse({ status: 200 })
-  @Get('/refresh')
+  @Post('/refresh')
   async refresh(@Req() req: Request, @Res() res: Response) {
     const { refreshToken } = req.cookies;
     const tokens = await this.authService.refresh(refreshToken);

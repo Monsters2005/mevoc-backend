@@ -18,6 +18,8 @@ import { UNAUTHORIZED_ERROR_MESSAGE } from 'src/constants/error-messages';
 import { MailService } from 'src/mail/mail.service';
 import { Response } from 'express';
 
+export type RequestUser = Pick<User, 'id' | 'email'>;
+
 @Injectable()
 export class AuthService {
   constructor(

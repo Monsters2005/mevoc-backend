@@ -6,9 +6,13 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { RequestUser } from 'src/auth/auth.service';
+import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from 'src/entity/User';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user-dto';
 import { UpdateUserDto } from './dto/update-user-dto';
 import { UsersService } from './users.service';
@@ -28,6 +32,12 @@ export class UsersController {
   @ApiResponse({ status: 200, type: User })
   getOne(@Param('id') id: number) {
     return this.usersService.findOne(id);
+  }
+
+  @Get('/me')
+  @UseGuards(JwtAuthGuard)
+  getCurrent(@GetUser() user: RequestUser) {
+    return this.usersService.findOne(user.id);
   }
 
   @Post()

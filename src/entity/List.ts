@@ -15,4 +15,7 @@ export class List extends AppEntity {
 
   @Column({ type: 'number' })
   progress: number;
+
+  @Column({ type: 'string', nullable: false })
+  learningLang: string;
 }
