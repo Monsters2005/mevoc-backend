@@ -8,45 +8,45 @@ export class User extends AppEntity {
   @PrimaryGeneratedColumn({ type: 'number' })
   id: number;
 
-  @Column({ type: 'string', unique: true, nullable: false })
+  @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column({ type: 'string', nullable: false })
+  @Column({ nullable: false })
   password: string;
 
-  @Column({ type: 'string', unique: true, nullable: false })
+  @Column({ unique: true, nullable: false })
   phone: string;
 
-  @Column({ type: 'string' })
+  @Column({})
   avatar: string;
 
-  @Column({ type: 'string' })
+  @Column({})
   username: string;
 
-  @Column({ type: 'string' })
+  @Column({})
   name: string;
 
-  @Column({ type: 'string' })
+  @Column({})
   lastname: string;
 
-  @Column({ type: 'date' })
+  @Column({})
   dob: Date;
 
-  @Column({ type: 'string' })
+  @Column({})
   nativeLang: string;
 
-  @Column({ type: 'string' })
+  @Column({})
   learningLang: string;
 
-  @Column({ type: 'string' })
+  @Column({})
   location: string;
 
-  @Column({ type: 'string', default: '', nullable: false })
+  @Column({ default: '', nullable: false })
   refreshToken: string;
 
   @Column({ type: 'boolean' })
   confirmed: boolean;
 
-  @Column({ type: 'string' })
+  @Column({})
   confirmed_hash: string;
 }

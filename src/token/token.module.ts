@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/entity/User';
@@ -15,7 +15,7 @@ import { TokenService } from './token.service';
       },
     }),
     TypeOrmModule.forFeature([User]),
-    UsersModule,
+    forwardRef(() => UsersModule),
   ],
   exports: [TokenService, TokenModule],
 })

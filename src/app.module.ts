@@ -18,6 +18,9 @@ import { TokenService } from './token/token.service';
 import { TokenModule } from './token/token.module';
 import { WordService } from './word/word.service';
 import { WordController } from './word/word.controller';
+import { Wordpack } from './entity/Wordpack';
+import { Word } from './entity/Word';
+import { List } from './entity/List';
 
 @Module({
   imports: [
@@ -31,13 +34,13 @@ import { WordController } from './word/word.controller';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User],
+      entities: [User, Wordpack, Word, List],
       migrations: ['dist/migration/*.js'],
       cli: {
         entitiesDir: 'src/entity',
         migrationsDir: 'src/migration',
       },
-      synchronize: false,
+      synchronize: true,
     }),
     UsersModule,
     WordpackModule,

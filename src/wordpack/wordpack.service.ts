@@ -36,11 +36,11 @@ export class WordpackService {
   private async transformToList(wordpack: Wordpack) {
     const newWordpack = JSON.parse(JSON.stringify(wordpack));
 
-    const formatWords = wordpack.words.map((el, i) => {
-      el['dateLearned'] = null;
-      el['id'] = i++;
-      el['list'] = wordpack.id;
-    });
+    // const formatWords = wordpack.words.map((el, i) => {
+    //   el['dateLearned'] = null;
+    //   el['id'] = i++;
+    //   el['list'] = wordpack.id;
+    // });
 
     const listModel: CreateListDto = {
       name: newWordpack.name,

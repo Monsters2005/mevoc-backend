@@ -8,8 +8,8 @@ import { AuthService } from './auth.service';
 
 @Module({
   imports: [
-    UsersModule,
     MailService,
+    forwardRef(() => UsersModule),
     forwardRef(() => TokenModule),
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET || 'SECRET',
@@ -20,6 +20,6 @@ import { AuthService } from './auth.service';
   ],
   controllers: [AuthController],
   providers: [AuthService, MailService],
-  exports: [AuthService, JwtModule, TokenModule, UsersModule],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

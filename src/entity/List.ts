@@ -4,18 +4,18 @@ import { Word } from './Word';
 
 @Entity()
 export class List extends AppEntity {
-  @PrimaryGeneratedColumn({ type: 'number' })
+  @PrimaryGeneratedColumn({})
   id: number;
 
-  @Column({ type: 'string', nullable: false })
+  @Column({ nullable: false })
   name: string;
 
   @OneToMany(() => Word, (word) => word.list)
   words: Word[];
 
-  @Column({ type: 'number' })
+  @Column({})
   progress: number;
 
-  @Column({ type: 'string', nullable: false })
+  @Column({ nullable: false })
   learningLang: string;
 }
