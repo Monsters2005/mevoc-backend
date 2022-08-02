@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DataType } from 'sequelize-typescript';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { AppEntity } from './AppEntity';
 
@@ -14,39 +13,36 @@ export class User extends AppEntity {
   @Column({ nullable: false })
   password: string;
 
-  @Column({ unique: true, nullable: false })
-  phone: string;
-
-  @Column({})
+  @Column({ nullable: true })
   avatar: string;
 
-  @Column({})
+  @Column({ nullable: true })
   username: string;
 
-  @Column({})
-  name: string;
+  @Column({ nullable: false })
+  firstName: string;
 
-  @Column({})
+  @Column({ nullable: true })
   lastname: string;
 
-  @Column({})
+  @Column({ nullable: true })
   dob: Date;
 
-  @Column({})
+  @Column({ nullable: true })
   nativeLang: string;
 
-  @Column({})
+  @Column({ nullable: true })
   learningLang: string;
 
-  @Column({})
+  @Column({ nullable: true })
   location: string;
 
   @Column({ default: '', nullable: false })
   refreshToken: string;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', nullable: true })
   confirmed: boolean;
 
-  @Column({})
+  @Column({ nullable: true })
   confirmed_hash: string;
 }

@@ -2,12 +2,14 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { SignInUserDto } from 'src/users/dto/signin-user-dto';
 import { UsersService } from 'src/users/users.service';
 
 import * as bcrypt from 'bcryptjs';
+import axios from 'axios';
 import { User } from 'src/entity/User';
 import { TokenService } from 'src/token/token.service';
 import { CreateUserDto } from 'src/users/dto/create-user-dto';
@@ -18,7 +20,10 @@ import { UNAUTHORIZED_ERROR_MESSAGE } from 'src/constants/error-messages';
 import { MailService } from 'src/mail/mail.service';
 import { Response } from 'express';
 
-export type RequestUser = Pick<User, 'id' | 'email'>;
+export type RequestUser = {
+  id: number;
+  email: string;
+};
 
 @Injectable()
 export class AuthService {
@@ -65,6 +70,7 @@ export class AuthService {
     };
 
     const tokens = await this.tokenService.generateTokens(payload);
+
     await this.tokenService.saveTokenById(tokens.refreshToken, {
       id: user.id,
       type: 'refreshToken',
@@ -194,5 +200,13 @@ export class AuthService {
     if (!user) {
       throw new HttpException('User is not found', HttpStatus.NOT_FOUND);
     }
+  }
+
+  static async checkToken(token: string): Promise<boolean> {
+    return (
+      await axios.post(`${process.env.AUTH_URL}/checkToken`, {
+        token,
+      })
+    ).data.result;
   }
 }

@@ -8,7 +8,7 @@ export class WordpackController {
   constructor(private wordpackService: WordpackService) {}
 
   @ApiResponse({ status: 200, type: [Wordpack] })
-  @Get(':id')
+  @Get('/:id')
   getAll(@Param('id') userId: number) {
     return this.wordpackService.getAllWordpacks(userId);
   }

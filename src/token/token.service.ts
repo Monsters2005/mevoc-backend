@@ -1,15 +1,10 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { userInfo } from 'os';
 import { User } from 'src/entity/User';
 import { UsersService } from 'src/users/users.service';
-import { Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 
 type Payload = {
   id: number;
@@ -30,6 +25,8 @@ export class TokenService {
     private jwtService: JwtService,
   ) {}
 
+  private logger = new Logger(TokenService.name);
+
   async generateTokens(payload: Payload) {
     const accessToken = this.jwtService.sign(payload);
 
@@ -46,12 +43,13 @@ export class TokenService {
 
   async saveTokenById(token: string, options: Options) {
     try {
-      const user = await this.usersService.findOne(options.id);
+      // const user = await this.usersService.findOne(options.id);
+      // if (!user)
+      //   throw new HttpException('User is not found', HttpStatus.NOT_FOUND);
 
-      if (!user)
-        throw new HttpException('User is not found', HttpStatus.NOT_FOUND);
-
-      await this.userRepository.update(user, { [options.type]: token });
+      await this.usersService.update(options.id, {
+        [options.type]: token,
+      });
     } catch (err) {
       throw new HttpException(err, HttpStatus.BAD_REQUEST);
     }

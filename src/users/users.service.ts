@@ -1,6 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { User } from '../entity/User';
 import { CreateUserDto } from './dto/create-user-dto';
 
@@ -9,6 +9,14 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
+  private logger = new Logger(UsersService.name);
+
+  async createUser(dto: CreateUserDto) {
+    const user = this.userRepository.create(dto);
+    await getRepository(User).save(user);
+
+    return user;
+  }
 
   async getAllUsers(): Promise<User[]> {
     return await this.userRepository.find();
@@ -34,10 +42,6 @@ export class UsersService {
 
   async delete(id: number): Promise<void> {
     await this.userRepository.softDelete(id);
-  }
-
-  async createUser(dto: CreateUserDto): Promise<User> {
-    return this.userRepository.create(dto);
   }
 
   async getUserByConfirmedHash(confirmedHash: string) {
