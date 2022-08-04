@@ -59,6 +59,7 @@ export class AuthService {
       );
 
     const hashPassword = await bcrypt.hash(dto.password, 5);
+    const username = dto.email.split('@')[0];
 
     const user = await this.usersService.createUser({
       ...dto,
@@ -76,6 +77,10 @@ export class AuthService {
       type: 'refreshToken',
     });
 
+    await this.usersService.update(user.id, {
+      username,
+    });
+
     return { ...tokens };
   }
 
@@ -84,6 +89,7 @@ export class AuthService {
   }
 
   async refresh(refreshToken: string) {
+    console.log('ok', refreshToken);
     if (!refreshToken) {
       throw new UnauthorizedException({
         message: UNAUTHORIZED_ERROR_MESSAGE,

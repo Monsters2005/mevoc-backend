@@ -21,7 +21,10 @@ import { RestorePasswordDto } from './dto/restore-password.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-import { REFRESH_TOKEN_MAXAGE } from 'src/constants/tokens-maxage';
+import {
+  ACCESS_TOKEN_MAXAGE,
+  REFRESH_TOKEN_MAXAGE,
+} from 'src/constants/tokens-maxage';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 
 @Controller('auth')
@@ -37,6 +40,7 @@ export class AuthController {
     res.cookie('refreshToken', tokens.refreshToken, {
       maxAge: REFRESH_TOKEN_MAXAGE,
       httpOnly: true,
+      secure: false,
     });
 
     return res.status(200).json(tokens);
@@ -51,6 +55,7 @@ export class AuthController {
     res.cookie('refreshToken', tokens.refreshToken, {
       maxAge: REFRESH_TOKEN_MAXAGE,
       httpOnly: true,
+      secure: false,
     });
 
     return res.status(200).json(tokens);
@@ -108,11 +113,15 @@ export class AuthController {
   @Post('/refresh')
   async refresh(@Req() req: Request, @Res() res: Response) {
     const { refreshToken } = req.cookies;
+    console.log('RefreshToken', req.cookies);
     const tokens = await this.authService.refresh(refreshToken);
-
+    // res.cookie('AccessToken', tokens.accessToken, {
+    //   maxAge: ACCESS_TOKEN_MAXAGE,
+    // });
     res.cookie('refreshToken', tokens['refreshToken'], {
       maxAge: REFRESH_TOKEN_MAXAGE,
       httpOnly: true,
+      secure: false,
     });
 
     return res.status(200).json(tokens);

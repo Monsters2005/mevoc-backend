@@ -11,10 +11,9 @@ async function bootstrap() {
   const PORT = process.env.PORT || 5001;
 
   app.enableCors({
-    origin: true,
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true,
   });
-
   app.use(cookieParser());
 
   const VERSION = '1.0.0';
@@ -29,7 +28,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`/api/docs/v/${VERSION}`, app, document);
 
-  app.enableCors();
   app.useLogger(new Logger());
 
   await app.listen(PORT, () => {
