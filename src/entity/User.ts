@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { DataType } from 'sequelize-typescript';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { AppEntity } from './AppEntity';
 
@@ -8,45 +7,42 @@ export class User extends AppEntity {
   @PrimaryGeneratedColumn({ type: 'number' })
   id: number;
 
-  @Column({ type: 'string', unique: true, nullable: false })
+  @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column({ type: 'string', nullable: false })
+  @Column({ nullable: false })
   password: string;
 
-  @Column({ type: 'string', unique: true, nullable: false })
-  phone: string;
-
-  @Column({ type: 'string' })
+  @Column({ nullable: true })
   avatar: string;
 
-  @Column({ type: 'string' })
+  @Column({ nullable: true })
   username: string;
 
-  @Column({ type: 'string' })
-  name: string;
+  @Column({ nullable: false })
+  firstName: string;
 
-  @Column({ type: 'string' })
+  @Column({ nullable: true })
   lastname: string;
 
-  @Column({ type: 'date' })
+  @Column({ nullable: true })
   dob: Date;
 
-  @Column({ type: 'string' })
+  @Column({ nullable: true })
   nativeLang: string;
 
-  @Column({ type: 'string' })
+  @Column({ nullable: true })
   learningLang: string;
 
-  @Column({ type: 'string' })
+  @Column({ nullable: true })
   location: string;
 
-  @Column({ type: 'string', default: '', nullable: false })
+  @Column({ default: '', nullable: false })
   refreshToken: string;
 
-  @Column({ type: 'boolean' })
+  @Column({ type: 'boolean', nullable: true })
   confirmed: boolean;
 
-  @Column({ type: 'string' })
+  @Column({ nullable: true })
   confirmed_hash: string;
 }

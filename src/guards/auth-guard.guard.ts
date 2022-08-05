@@ -2,44 +2,39 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 import { AuthHeader, Request } from 'src/auth/auth.header';
+import { AuthService, RequestUser } from 'src/auth/auth.service';
 import { UNAUTHORIZED_ERROR_MESSAGE } from 'src/constants/error-messages';
 
 @Injectable()
-export class JwtAuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+export class AuthGuard implements CanActivate {
+  constructor(private reflector: Reflector, private jwtService: JwtService) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();
-    try {
-      return this.validateRequest(request);
-    } catch (e) {
-      throw new UnauthorizedException({
-        message: UNAUTHORIZED_ERROR_MESSAGE,
-        statusCode: 401,
-      });
-    }
-  }
-
-  validateRequest(request: Request): boolean {
     const authHeader = new AuthHeader(request);
     const token = authHeader.getValidToken();
+
     if (!token) {
       throw new UnauthorizedException({
         message: UNAUTHORIZED_ERROR_MESSAGE,
         statusCode: 401,
       });
     }
-    const user = this.jwtService.verify(token);
-    request.user = user;
 
-    return true;
+    request.user = this.jwtService.decode(token) as RequestUser;
+
+    const result = await AuthService.checkToken(token);
+
+    if (!result) {
+      return false;
+    }
+
+    return result;
   }
 }

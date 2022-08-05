@@ -18,34 +18,33 @@ import { ListService } from './list.service';
 export class ListController {
   constructor(private listService: ListService) {}
 
-  @Get(':id')
+  @Get('/:id')
   @ApiResponse({ status: 200, type: List })
   getListById(@Param('id') id: number) {
     return this.listService.getListById(id);
   }
 
-  @Get()
+  @Get('/')
   @ApiResponse({ status: 200, type: [List] })
   getAllLists() {
     return this.listService.getAllLists();
   }
 
-  @Post('/list')
+  @Post('/')
   @ApiResponse({ status: 200, type: List })
   createList(@Body() dto: CreateListDto) {
     return this.listService.createList(dto);
   }
 
-  @Put(':id')
+  @Put('/:id')
   @ApiResponse({ status: 201, type: List })
   updateList(@Body() dto: UpdateListDto, @Param('id') id: number) {
     return this.listService.updateList(id, dto);
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   @ApiResponse({ status: 200 })
   deleteList(@Param() id: number) {
     return this.listService.deleteList(id);
   }
 }
-

@@ -3,19 +3,16 @@ import { AppEntity } from './AppEntity';
 import { Word } from './Word';
 
 @Entity()
-export class List extends AppEntity {
-  @PrimaryGeneratedColumn({})
+export class Wordpack extends AppEntity {
+  @PrimaryGeneratedColumn({ type: 'number' })
   id: number;
 
   @Column({ nullable: false })
   name: string;
 
-  @OneToMany(() => Word, (word) => word.list)
+  @OneToMany(() => Word, (word) => word.wordpack)
   words: Word[];
 
-  @Column({})
-  progress: number;
-
   @Column({ nullable: false })
-  learningLang: string;
+  icon: string;
 }

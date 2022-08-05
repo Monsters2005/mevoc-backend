@@ -4,7 +4,7 @@ import { List } from './List';
 import { Wordpack } from './Wordpack';
 
 @Entity()
-export class Word extends AppEntity {
+export class WordpackWord extends AppEntity {
   @PrimaryGeneratedColumn({ type: 'number' })
   id: number;
 
@@ -13,11 +13,4 @@ export class Word extends AppEntity {
 
   @Column({ nullable: false })
   wordLearning: string;
-
-  @Column({ nullable: true })
-  dateLearned: null | string;
-
-  @ManyToOne(() => List, (list) => list.words)
-  list: List;
-  wordpack: Wordpack;
 }
