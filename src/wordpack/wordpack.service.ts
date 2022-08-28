@@ -33,7 +33,7 @@ export class WordpackService {
     return user.learningLang;
   }
 
-  private async transformToList(wordpack: Wordpack) {
+  private async transformToList(wordpack: Wordpack, id: number) {
     const newWordpack = JSON.parse(JSON.stringify(wordpack));
 
     // const formatWords = wordpack.words.map((el, i) => {
@@ -45,6 +45,7 @@ export class WordpackService {
     const listModel: CreateListDto = {
       name: newWordpack.name,
       words: newWordpack.words,
+      userId: id,
       progress: 0,
     };
 
@@ -54,6 +55,6 @@ export class WordpackService {
   async addWordpack(userId: number, id: number) {
     const user = await this.userService.findOne(userId);
     const wordpack = await this.getWordpackById(userId, id);
-    const newList = this.transformToList(wordpack);
+    const newList = this.transformToList(wordpack, user.id);
   }
 }

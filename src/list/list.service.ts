@@ -1,7 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { List } from 'src/entity/List';
-import { Repository } from 'typeorm';
+import { User } from 'src/entity/User';
+import { getRepository, Repository } from 'typeorm';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
 
@@ -15,12 +16,40 @@ export class ListService {
     return await this.listRepository.find();
   }
 
-  async getListById(id: number): Promise<List> {
-    return await this.listRepository.findOne({ id });
+  async getListsByUserId(id: number): Promise<List[]> {
+    // const user = await getRepository(User).find({
+    //   where: {
+    //     id,
+    //   },
+    // });
+    return await this.listRepository.find({ userId: id });
   }
 
+  async getListById(id: number): Promise<List> {
+    // const user = await getRepository(User).find({
+    //   where: {
+    //     id,
+    //   },
+    // });
+    return await this.listRepository.findOne({ userId: id });
+  }
   async createList(dto: CreateListDto): Promise<List> {
-    return this.listRepository.create(dto);
+    const list = this.listRepository.create(dto);
+    const user = await getRepository(User).find({
+      where: {
+        id: dto.userId,
+      },
+    });
+
+    await getRepository(List).save({ user: user, ...list });
+    //  await dataSource
+    //    .createQueryBuilder()
+    //    .update(User)
+    //    .set({ firstName: 'Timber', lastName: 'Saw' })
+    //    .where('id = :id', { id: 1 })
+    //    .execute();
+
+    return list;
   }
 
   async updateList(id: number, dto: UpdateListDto): Promise<List> {

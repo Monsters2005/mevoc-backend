@@ -89,7 +89,6 @@ export class AuthService {
   }
 
   async refresh(refreshToken: string) {
-    console.log('ok', refreshToken);
     if (!refreshToken) {
       throw new UnauthorizedException({
         message: UNAUTHORIZED_ERROR_MESSAGE,
@@ -108,6 +107,19 @@ export class AuthService {
         statusCode: 401,
       });
     }
+
+    const payload = {
+      id: userData.id,
+      email: userData.email,
+    };
+
+    const tokens = await this.tokenService.generateTokens(payload);
+    await this.tokenService.saveTokenById(tokens.refreshToken, {
+      id: userData.id,
+      type: 'refreshToken',
+    });
+
+    return { ...tokens };
   }
 
   async verifyByEmail(confirmedHash: string, res: Response) {

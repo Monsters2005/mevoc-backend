@@ -58,14 +58,17 @@ export class TokenService {
   async deleteRefreshToken(token: string) {
     const user = await this.userRepository.update(
       {
+        refreshToken: token,
+      },
+      {
         refreshToken: '',
       },
-      { refreshToken: token },
     );
 
     if (!user)
       throw new HttpException('User is not found', HttpStatus.NOT_FOUND);
 
+    console.log('user', user);
     return user;
   }
 
@@ -97,8 +100,12 @@ export class TokenService {
     }
   }
 
-  async findRefreshToken(token: string) {
-    const user = await this.userRepository.findOne({ where: { token } });
+  async findRefreshToken(refreshToken: string) {
+    const user = await getRepository(User).find({
+      where: {
+        refreshToken,
+      },
+    });
 
     if (!user) {
       throw new HttpException('User is not found', HttpStatus.NOT_FOUND);

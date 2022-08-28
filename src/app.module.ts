@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -35,6 +35,7 @@ import { List } from './entity/List';
         migrationsDir: 'src/migration',
       },
       synchronize: true,
+      autoLoadEntities: true,
     }),
     UsersModule,
     WordpackModule,

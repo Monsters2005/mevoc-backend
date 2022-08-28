@@ -13,4 +13,7 @@ export class CreateListDto {
 
   @IsNotEmpty({ message: 'Should not be empty' })
   readonly progress: number;
+
+  @IsNotEmpty({ message: 'Should not be empty' })
+  readonly userId: number;
 }

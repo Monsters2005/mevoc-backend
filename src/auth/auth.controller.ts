@@ -36,13 +36,11 @@ export class AuthController {
   @Post('/signin')
   async signin(@Body() dto: SignInUserDto, @Res() res: Response) {
     const tokens = await this.authService.signin(dto);
-
     res.cookie('refreshToken', tokens.refreshToken, {
       maxAge: REFRESH_TOKEN_MAXAGE,
       httpOnly: true,
       secure: false,
     });
-
     return res.status(200).json(tokens);
   }
 
@@ -95,9 +93,11 @@ export class AuthController {
 
   @ApiResponse({ status: 200 })
   @Post('/signout')
-  logout(@Req() req: Request) {
+  logout(@Req() req: Request, @Res() res: Response) {
     const { refreshToken } = req.cookies;
-    return this.authService.signout(refreshToken);
+    res.clearCookie('refreshToken');
+    this.authService.signout(refreshToken);
+    return res.status(200).json({ message: 'Logout success!' });
   }
 
   @ApiResponse({ status: 200, type: VerifyEmailDto })
@@ -113,7 +113,6 @@ export class AuthController {
   @Post('/refresh')
   async refresh(@Req() req: Request, @Res() res: Response) {
     const { refreshToken } = req.cookies;
-    console.log('RefreshToken', req.cookies);
     const tokens = await this.authService.refresh(refreshToken);
     // res.cookie('AccessToken', tokens.accessToken, {
     //   maxAge: ACCESS_TOKEN_MAXAGE,

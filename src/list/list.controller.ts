@@ -18,16 +18,16 @@ import { ListService } from './list.service';
 export class ListController {
   constructor(private listService: ListService) {}
 
-  @Get('/:id')
-  @ApiResponse({ status: 200, type: List })
-  getListById(@Param('id') id: number) {
-    return this.listService.getListById(id);
+  @Get('/:userId')
+  @ApiResponse({ status: 200, type: [List] })
+  getListsById(@Param('userId') userId: number) {
+    return this.listService.getListsByUserId(userId);
   }
 
-  @Get('/')
-  @ApiResponse({ status: 200, type: [List] })
-  getAllLists() {
-    return this.listService.getAllLists();
+  @Get('/:listId')
+  @ApiResponse({ status: 200, type: List })
+  getListById(@Param('listId') listId: number) {
+    return this.listService.getListById(listId);
   }
 
   @Post('/')

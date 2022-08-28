@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { AppEntity } from './AppEntity';
+import { List } from './List';
 
 @Entity()
 export class User extends AppEntity {
@@ -45,4 +46,7 @@ export class User extends AppEntity {
 
   @Column({ nullable: true })
   confirmed_hash: string;
+
+  @OneToMany(() => List, (list) => list.userId)
+  lists: List[];
 }
