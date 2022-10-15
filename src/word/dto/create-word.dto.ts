@@ -14,4 +14,7 @@ export class CreateWordDto {
 
   @IsNotEmpty({ message: 'Should not be empty' })
   readonly dateLearned: string | null;
+
+  @IsNotEmpty({ message: 'Should not be empty' })
+  readonly listId: number;
 }

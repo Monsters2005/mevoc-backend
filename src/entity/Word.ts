@@ -17,7 +17,8 @@ export class Word extends AppEntity {
   @Column({ nullable: true })
   dateLearned: null | string;
 
-  @ManyToOne(() => List, (list) => list.words)
-  list: List;
+  @ManyToOne(() => List)
+  listId: number;
+
   wordpack: Wordpack;
 }

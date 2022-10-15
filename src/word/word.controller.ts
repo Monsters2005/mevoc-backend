@@ -9,16 +9,22 @@ import { WordService } from './word.service';
 export class WordController {
   constructor(private wordsService: WordService) {}
 
-  @Get('/:id')
-  @ApiResponse({ status: 200, type: Word })
-  getWordById(@Param('id') id: number) {
-    return this.wordsService.getWordById(id);
+  // @Get('/:id')
+  // @ApiResponse({ status: 200, type: Word })
+  // getWordById(@Param('id') id: number) {
+  //   return this.wordsService.getWordById(id);
+  // }
+
+  @Get('/:listId')
+  @ApiResponse({ status: 200, type: [Word] })
+  getWordsByListId(@Param('listId') listId: number) {
+    return this.wordsService.getWordsByListId(listId);
   }
 
   @Post('/')
   @ApiResponse({ status: 201, type: Word })
   createWord(@Body() dto: CreateWordDto) {
-    return this.wordsService.createWord(dto);
+    return this.wordsService.createWord(dto, dto.listId);
   }
 
   @Put('/:id')

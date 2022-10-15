@@ -16,23 +16,19 @@ export class ListService {
     return await this.listRepository.find();
   }
 
-  async getListsByUserId(id: number): Promise<List[]> {
-    // const user = await getRepository(User).find({
-    //   where: {
-    //     id,
-    //   },
-    // });
-    return await this.listRepository.find({ userId: id });
+  getListsByUserId(userId: number) {
+    return this.listRepository.find({
+      where: {
+        userId,
+      },
+      relations: ['words'],
+    });
   }
 
   async getListById(id: number): Promise<List> {
-    // const user = await getRepository(User).find({
-    //   where: {
-    //     id,
-    //   },
-    // });
     return await this.listRepository.findOne({ userId: id });
   }
+
   async createList(dto: CreateListDto): Promise<List> {
     const list = this.listRepository.create(dto);
     const user = await getRepository(User).find({
@@ -52,8 +48,9 @@ export class ListService {
     return list;
   }
 
-  async updateList(id: number, dto: UpdateListDto): Promise<List> {
+  async updateList(id: number, dto: Partial<UpdateListDto>): Promise<List> {
     const list = await this.getListById(id);
+    console.log('here', list);
 
     if (!list) {
       throw new HttpException('List not found', 404);

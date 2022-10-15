@@ -2,8 +2,8 @@ import { IsNotEmpty, IsString } from 'class-validator';
 import { Word } from 'src/entity/Word';
 
 export class CreateListDto {
-  // @IsNotEmpty({ message: 'Should not be empty' })
-  // readonly id: number;
+  @IsNotEmpty({ message: 'Should not be empty' })
+  readonly id: number;
 
   @IsNotEmpty({ message: 'Should not be empty' })
   @IsString({ message: 'Should be a string' })

@@ -17,7 +17,7 @@ export class List extends AppEntity {
   @Column({ nullable: false })
   name: string;
 
-  @OneToMany(() => Word, (word) => word.list)
+  @OneToMany(() => Word, (word) => word.listId)
   words: Word[];
 
   @Column({ nullable: true })

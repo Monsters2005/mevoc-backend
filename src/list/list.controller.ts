@@ -24,12 +24,6 @@ export class ListController {
     return this.listService.getListsByUserId(userId);
   }
 
-  @Get('/:listId')
-  @ApiResponse({ status: 200, type: List })
-  getListById(@Param('listId') listId: number) {
-    return this.listService.getListById(listId);
-  }
-
   @Post('/')
   @ApiResponse({ status: 200, type: List })
   createList(@Body() dto: CreateListDto) {

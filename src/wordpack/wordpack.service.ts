@@ -43,6 +43,7 @@ export class WordpackService {
     // });
 
     const listModel: CreateListDto = {
+      id: 1, // ! make id unique
       name: newWordpack.name,
       words: newWordpack.words,
       userId: id,

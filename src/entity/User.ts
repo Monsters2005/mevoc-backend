@@ -24,10 +24,13 @@ export class User extends AppEntity {
   firstName: string;
 
   @Column({ nullable: true })
-  lastname: string;
+  lastName: string;
 
   @Column({ nullable: true })
   dob: Date;
+
+  @Column({ unique: true, nullable: true })
+  phoneNumber: string;
 
   @Column({ nullable: true })
   nativeLang: string;
