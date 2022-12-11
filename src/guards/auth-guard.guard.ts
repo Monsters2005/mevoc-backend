@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { Observable } from 'rxjs';
 import { AuthHeader, Request } from 'src/auth/auth.header';
 import { AuthService, RequestUser } from 'src/auth/auth.service';
 import { UNAUTHORIZED_ERROR_MESSAGE } from 'src/constants/error-messages';

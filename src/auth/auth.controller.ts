@@ -41,6 +41,13 @@ export class AuthController {
       httpOnly: true,
       secure: false,
     });
+
+    res.cookie('accessToken', tokens.accessToken, {
+      maxAge: REFRESH_TOKEN_MAXAGE,
+      httpOnly: true,
+      secure: false,
+    });
+
     return res.status(200).json(tokens);
   }
 
@@ -51,6 +58,12 @@ export class AuthController {
     const tokens = await this.authService.signup(dto);
 
     res.cookie('refreshToken', tokens.refreshToken, {
+      maxAge: ACCESS_TOKEN_MAXAGE,
+      httpOnly: true,
+      secure: false,
+    });
+
+    res.cookie('accessToken', tokens.accessToken, {
       maxAge: REFRESH_TOKEN_MAXAGE,
       httpOnly: true,
       secure: false,
@@ -93,10 +106,11 @@ export class AuthController {
 
   @ApiResponse({ status: 200 })
   @Post('/signout')
-  logout(@Req() req: Request, @Res() res: Response) {
+  async logout(@Req() req: Request, @Res() res: Response) {
     const { refreshToken } = req.cookies;
     res.clearCookie('refreshToken');
-    this.authService.signout(refreshToken);
+    res.clearCookie('accessToken');
+    await this.authService.signout(refreshToken);
     return res.status(200).json({ message: 'Logout success!' });
   }
 
@@ -114,9 +128,10 @@ export class AuthController {
   async refresh(@Req() req: Request, @Res() res: Response) {
     const { refreshToken } = req.cookies;
     const tokens = await this.authService.refresh(refreshToken);
-    // res.cookie('AccessToken', tokens.accessToken, {
-    //   maxAge: ACCESS_TOKEN_MAXAGE,
-    // });
+    res.cookie('accessToken', tokens.accessToken, {
+      maxAge: ACCESS_TOKEN_MAXAGE,
+      httpOnly: true,
+    });
     res.cookie('refreshToken', tokens['refreshToken'], {
       maxAge: REFRESH_TOKEN_MAXAGE,
       httpOnly: true,

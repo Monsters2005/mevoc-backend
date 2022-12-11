@@ -29,7 +29,7 @@ export class User extends AppEntity {
   @Column({ nullable: true })
   dob: Date;
 
-  @Column({ unique: true, nullable: true })
+  @Column({ nullable: true })
   phoneNumber: string;
 
   @Column({ nullable: true })

@@ -46,7 +46,7 @@ export class AuthService {
       id: user.id,
       type: 'refreshToken',
     });
-    return { ...tokens };
+    return tokens;
   }
 
   async signup(dto: CreateUserDto) {

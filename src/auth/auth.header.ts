@@ -11,7 +11,7 @@ export interface Request extends ExpressRequest {
 }
 
 export class AuthHeader {
-  constructor(private request: Request) {}
+  constructor(private request: ExpressRequest) {}
 
   getValidToken(): string {
     const authorization = this.request.headers.authorization;
@@ -20,17 +20,16 @@ export class AuthHeader {
     const token = this.getToken(authHeader);
 
     if (!isBearer || !token) {
-      return this.getToken(authHeader);
+      return this.request?.cookies?.['accessToken'];
     }
-
     return token;
   }
 
   private isBearer(authHeader: string, typeToken: string): boolean {
-    return authHeader.split(' ')[0] === typeToken;
+    return authHeader?.split(' ')?.[0] === typeToken;
   }
 
   private getToken(authHeader: string): string {
-    return authHeader.split(' ')[1];
+    return authHeader?.split(' ')?.[1];
   }
 }

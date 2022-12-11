@@ -31,6 +31,7 @@ export class JwtAuthGuard implements CanActivate {
   validateRequest(request: Request): boolean {
     const authHeader = new AuthHeader(request);
     const token = authHeader.getValidToken();
+    console.log('token: ', token);
     if (!token) {
       throw new UnauthorizedException({
         message: UNAUTHORIZED_ERROR_MESSAGE,
@@ -38,6 +39,14 @@ export class JwtAuthGuard implements CanActivate {
       });
     }
     const user = this.jwtService.verify(token);
+
+    if (!user) {
+      throw new UnauthorizedException({
+        message: UNAUTHORIZED_ERROR_MESSAGE,
+        statusCode: 401,
+      });
+    }
+
     request.user = user;
 
     return true;
