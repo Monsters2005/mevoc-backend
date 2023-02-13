@@ -5,6 +5,7 @@ import { User } from 'src/entity/User';
 import { getRepository, Repository } from 'typeorm';
 import { CreateListDto } from './dto/create-list.dto';
 import { UpdateListDto } from './dto/update-list.dto';
+import { Word } from 'src/entity/Word';
 
 @Injectable()
 export class ListService {
@@ -31,21 +32,19 @@ export class ListService {
 
   async createList(dto: CreateListDto): Promise<List> {
     const list = this.listRepository.create(dto);
+
     const user = await getRepository(User).find({
       where: {
         id: dto.userId,
       },
     });
 
-    await getRepository(List).save({ user: user, ...list });
-    //  await dataSource
-    //    .createQueryBuilder()
-    //    .update(User)
-    //    .set({ firstName: 'Timber', lastName: 'Saw' })
-    //    .where('id = :id', { id: 1 })
-    //    .execute();
+    const savedList = await getRepository(List).save({ user: user, ...list });
 
-    return list;
+    const words = dto.words.map((word) => ({ ...word, listId: savedList.id }));
+    await getRepository(Word).save(words);
+
+    return savedList;
   }
 
   async updateList(id: number, dto: Partial<UpdateListDto>): Promise<List> {

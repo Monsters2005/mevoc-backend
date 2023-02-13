@@ -19,8 +19,6 @@ export class WordService {
   }
 
   async getWordsByListId(id: number) {
-    // return await this.wordsRepository.find({ listId: id });
-    console.log(id);
     return await this.wordsRepository.find({
       where: { listId: id },
     });
