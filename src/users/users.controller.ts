@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
   Param,
   Post,
   Put,
@@ -11,10 +10,8 @@ import {
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { RequestUser } from 'src/auth/auth.service';
-import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { GetUser } from 'src/decorators/get-user.decorator';
 import { User } from 'src/entity/User';
-import { AuthGuard } from 'src/guards/auth-guard.guard';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user-dto';
 import { UpdateUserDto } from './dto/update-user-dto';
@@ -24,7 +21,6 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
-  private logger = new Logger(UsersController.name);
 
   @Get('/')
   @ApiResponse({ status: 200, type: [User] })
