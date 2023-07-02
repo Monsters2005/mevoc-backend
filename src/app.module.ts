@@ -45,6 +45,6 @@ import { List } from './entity/List';
     ListModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, User],
 })
 export class AppModule {}

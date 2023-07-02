@@ -50,6 +50,18 @@ export class User extends AppEntity {
   @Column({ nullable: true })
   confirmed_hash: string;
 
+  @Column({ nullable: true })
+  theme: string;
+
+  @Column({ nullable: true })
+  accentColor: string;
+
+  @Column({ nullable: true })
+  textSize: string;
+
+  @Column({ nullable: true })
+  textColor: string;
+
   @OneToMany(() => List, (list) => list.userId)
   lists: List[];
 }

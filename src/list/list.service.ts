@@ -40,7 +40,6 @@ export class ListService {
     });
 
     const savedList = await getRepository(List).save({ user: user, ...list });
-
     const words = dto.words.map((word) => ({ ...word, listId: savedList.id }));
     await getRepository(Word).save(words);
 
