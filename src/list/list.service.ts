@@ -27,7 +27,7 @@ export class ListService {
   }
 
   async getListById(id: number): Promise<List> {
-    return await this.listRepository.findOne({ userId: id });
+    return await this.listRepository.findOne({ id });
   }
 
   async createList(dto: CreateListDto): Promise<List> {
@@ -46,15 +46,14 @@ export class ListService {
     return savedList;
   }
 
-  async updateList(id: number, dto: Partial<UpdateListDto>): Promise<List> {
-    const list = await this.getListById(id);
-    console.log('here', list);
+  async updateList(dto: Partial<UpdateListDto>): Promise<List> {
+    const list = await this.getListById(dto.id);
 
     if (!list) {
       throw new HttpException('List not found', 404);
     }
 
-    return this.listRepository.save({ id, ...dto });
+    return this.listRepository.save(dto);
   }
 
   async deleteList(id: number): Promise<void> {

@@ -30,10 +30,10 @@ export class ListController {
     return this.listService.createList(dto);
   }
 
-  @Put('/:id')
+  @Put()
   @ApiResponse({ status: 201, type: List })
-  updateList(@Body() dto: UpdateListDto, @Param('id') id: number) {
-    return this.listService.updateList(id, dto);
+  updateList(@Body() dto: UpdateListDto) {
+    return this.listService.updateList(dto);
   }
 
   @Delete('/:id')
