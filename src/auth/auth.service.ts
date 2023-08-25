@@ -141,7 +141,10 @@ export class AuthService {
 
   async changeCurrentPassword(userId: number, dto: ChangePasswordDto) {
     const user = await this.usersService.findOne(userId);
-    const passwordIsValid = await bcrypt.compare(dto.password, user.password);
+    const passwordIsValid = await bcrypt.compare(
+      dto.current_password,
+      user.password,
+    );
 
     if (!passwordIsValid) {
       throw new HttpException(
@@ -151,6 +154,7 @@ export class AuthService {
     }
 
     this.changePassword(userId, dto);
+    return { status: 200, message: 'Password was changed successfully' };
   }
 
   async forgotPassword(dto: ForgotPasswordDto) {

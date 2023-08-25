@@ -93,7 +93,7 @@ export class AuthController {
 
   @ApiResponse({ status: 200, type: ChangePasswordDto })
   @UseGuards(JwtAuthGuard)
-  @Patch('/change-password')
+  @Post('/change-password')
   async changePassword(
     @Req() req: Request,
     @Body() dto: ChangePasswordDto,
