@@ -3,12 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { getRepository, Repository } from 'typeorm';
 import { User } from '../entity/User';
 import { CreateUserDto } from './dto/create-user-dto';
+import { authenticator } from 'otplib';
 
 @Injectable()
 export class UsersService {
+  mfaSecret: string;
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  ) {
+    this.mfaSecret = process.env.MFA_SECRET;
+  }
   private logger = new Logger(UsersService.name);
 
   async createUser(dto: CreateUserDto) {
@@ -54,5 +58,32 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async toggleMfa(id: number, code?: string): Promise<void> {
+    return this.userRepository.findOne(id).then((user) => {
+      if (!user) {
+        throw new HttpException('User is not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (
+        authenticator.verify({
+          token: code,
+          secret: this.mfaSecret,
+        })
+      ) {
+        if (!user.mfa) {
+          return this.userRepository
+            .update(user.id, { mfa: true })
+            .then(() => {});
+        }
+
+        return this.userRepository
+          .update(user.id, { mfa: false })
+          .then(() => {});
+      } else {
+        throw new HttpException('Invalid MFA code', HttpStatus.FORBIDDEN);
+      }
+    });
   }
 }

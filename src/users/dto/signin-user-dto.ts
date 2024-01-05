@@ -14,4 +14,6 @@ export class SignInUserDto {
     message: `Password should be at least ${MIN_PASSWORD_LENGTH} characters long`,
   })
   readonly password: string;
+
+  readonly token?: string;
 }

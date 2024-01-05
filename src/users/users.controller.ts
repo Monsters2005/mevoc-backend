@@ -57,4 +57,11 @@ export class UsersController {
   delete(@Param('id') id: number) {
     return this.usersService.delete(id);
   }
+
+  @Put('/me/mfa')
+  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 200 })
+  toggleMfa(@GetUser() user: RequestUser, @Body() body: { code: string }) {
+    return this.usersService.toggleMfa(user.id, body.code);
+  }
 }

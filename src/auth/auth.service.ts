@@ -19,6 +19,7 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { UNAUTHORIZED_ERROR_MESSAGE } from 'src/constants/error-messages';
 import { MailService } from 'src/mail/mail.service';
 import { Response } from 'express';
+import { authenticator } from 'otplib';
 
 export type RequestUser = {
   id: number;
@@ -27,26 +28,54 @@ export type RequestUser = {
 
 @Injectable()
 export class AuthService {
+  mfaSecret: string;
   constructor(
     private usersService: UsersService,
     private tokenService: TokenService,
     private mailService: MailService,
-  ) {}
+  ) {
+    this.mfaSecret = process.env.MFA_SECRET;
+  }
 
-  async signin(dto: SignInUserDto) {
+  async signin(dto: SignInUserDto): Promise<
+    [
+      {
+        accessToken: string;
+        refreshToken: string;
+      },
+      boolean,
+      boolean,
+    ]
+  > {
     const user = await this.validateUserCredentials(dto);
 
     const payload = {
       id: user.id,
       email: user.email,
+      mfa: user.mfa,
     };
+
+    if (user.mfa) {
+      if (!dto.token) {
+        return [undefined, true, false];
+      }
+
+      if (
+        !authenticator.verify({
+          token: dto.token,
+          secret: this.mfaSecret,
+        })
+      ) {
+        return [undefined, false, false];
+      }
+    }
 
     const tokens = await this.tokenService.generateTokens(payload);
     await this.tokenService.saveTokenById(tokens.refreshToken, {
       id: user.id,
       type: 'refreshToken',
     });
-    return tokens;
+    return [tokens, false, false];
   }
 
   async signup(dto: CreateUserDto) {
@@ -68,6 +97,7 @@ export class AuthService {
     const payload = {
       id: user.id,
       email: user.email,
+      mfa: user.mfa,
     };
 
     const tokens = await this.tokenService.generateTokens(payload);
@@ -111,6 +141,7 @@ export class AuthService {
     const payload = {
       id: userData.id,
       email: userData.email,
+      mfa: userData.mfa,
     };
 
     const tokens = await this.tokenService.generateTokens(payload);

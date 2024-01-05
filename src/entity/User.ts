@@ -64,4 +64,7 @@ export class User extends AppEntity {
 
   @OneToMany(() => List, (list) => list.userId)
   lists: List[];
+
+  @Column({ type: 'boolean', default: false })
+  mfa: boolean;
 }
